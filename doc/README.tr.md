@@ -1,7 +1,7 @@
 
 # 🌐 Easy Proxy Server — Hızlı ve Hafif HTTP Proxy Sunucusu
 
-[🇬🇧 English](/README.md) | [🇷🇺 Русский](/doc/README.md) | [🇪🇸 Español](/doc/README.es.md) | [🇩🇪 Deutsch](/doc/README.de.md) | [🇫🇷 Français](/doc/README.fr.md) | [🇨🇳 中文](/doc/README.zh.md) | [🇮🇳 हिंदी](/doc/README.hi.md) | [🇧🇷 Português](/doc/README.pt.md) | [🇹🇷 Türkçe](/doc/README.tr.md) | [🇮🇩 Bahasa Indonesia](/doc/README.id.md) | [🇻🇳 Tiếng Việt](/doc/README.vi.md) | [🇰🇷 한국어](/doc/README.ko.md)
+[🇬🇧 English](/README.md) | [🇷🇺 Русский](/doc/README.ru.md) | [🇪🇸 Español](/doc/README.es.md) | [🇩🇪 Deutsch](/doc/README.de.md) | [🇫🇷 Français](/doc/README.fr.md) | [🇨🇳 中文](/doc/README.zh.md) | [🇮🇳 हिंदी](/doc/README.hi.md) | [🇧🇷 Português](/doc/README.pt.md) | [🇹🇷 Türkçe](/doc/README.tr.md) | [🇮🇩 Bahasa Indonesia](/doc/README.id.md) | [🇻🇳 Tiếng Việt](/doc/README.vi.md) | [🇰🇷 한국어](/doc/README.ko.md)
 
 **Easy Proxy Server**, Go (Golang) ile geliştirilmiş minimalist ve güçlü bir HTTP proxy sunucusudur.  
 Yerel geliştirme ortamları veya üretim sunucuları için idealdir ve **token tabanlı URL yapısı** üzerinden HTTP isteklerini yönlendirmeyi sağlar.
