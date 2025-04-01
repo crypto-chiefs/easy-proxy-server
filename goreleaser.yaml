@@ -8,7 +8,8 @@ builds:
     goarch: [amd64, arm64]
     env:
       - CGO_ENABLED=0
-    goamd64: v1
+    goamd64:
+      - v1
     flags:
       - -trimpath
     ldflags:
