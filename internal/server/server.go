@@ -1,6 +1,7 @@
 package server
 
 import (
+	"crypto/tls"
 	"io"
 	"log"
 	"net/http"
@@ -36,6 +37,8 @@ var client = &http.Client{
 		MaxIdleConns:        1000,
 		MaxIdleConnsPerHost: 100,
 		IdleConnTimeout:     90 * time.Second,
+		TLSClientConfig:     &tls.Config{InsecureSkipVerify: false},
+		ForceAttemptHTTP2:   true,
 	},
 }
 
@@ -55,15 +58,36 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	proxyURL := "https://" + host + rest
+	log.Println("Proxying to:", proxyURL)
+
 	req, err := http.NewRequestWithContext(r.Context(), r.Method, proxyURL, r.Body)
 	if err != nil {
+		log.Println("Error creating request:", err)
 		http.Error(w, "Failed to create request", http.StatusInternalServerError)
 		return
 	}
-	req.Header = r.Header.Clone()
+
+	// Пропускаем только безопасные заголовки
+	safeHeaders := []string{
+		"Accept",
+		"Content-Type",
+		"Authorization",
+		"Cache-Control",
+	}
+
+	for _, h := range safeHeaders {
+		if values, ok := r.Header[h]; ok {
+			for _, v := range values {
+				req.Header.Add(h, v)
+			}
+		}
+	}
+
+	// Не добавляем X-Forwarded-For (и не нужен)
 
 	resp, err := client.Do(req)
 	if err != nil {
+		log.Println("Error forwarding request:", err)
 		http.Error(w, "Upstream request failed: "+err.Error(), http.StatusBadGateway)
 		return
 	}
@@ -76,5 +100,8 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(resp.StatusCode)
-	io.Copy(w, resp.Body)
+	_, err = io.Copy(w, resp.Body)
+	if err != nil {
+		log.Println("Error copying response body:", err)
+	}
 }
