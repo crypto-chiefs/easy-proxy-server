@@ -1,0 +1,37 @@
+# Go build artifacts
+proxy
+*.exe
+*.out
+*.test
+
+# Build output
+dist/
+bin/
+build/
+
+# Dependency directories (if using vendoring)
+vendor/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+*.bak
+
+# Token and local secrets
+**/.token
+
+# IDE/editor files
+.vscode/
+.idea/
+*.iml
+
+# Goreleaser output
+release/
+*.tar.gz
+*.zip
+checksums.txt
