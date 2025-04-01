@@ -42,6 +42,16 @@ bash <(curl -sSL https://raw.githubusercontent.com/crypto-chiefs/easy-proxy-serv
 
 ---
 
+## ❌ Gỡ cài đặt
+
+Nếu bạn muốn gỡ Easy Proxy Server khỏi hệ thống của mình, hãy chạy:
+
+```bash
+bash <(curl -sSL https://raw.githubusercontent.com/crypto-chiefs/easy-proxy-server/master/scripts/uninstall.sh)
+```
+
+---
+
 ## 🧪 Cách hoạt động
 
 Gửi yêu cầu HTTP theo định dạng sau:

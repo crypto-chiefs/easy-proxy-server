@@ -43,6 +43,16 @@ bash <(curl -sSL https://raw.githubusercontent.com/crypto-chiefs/easy-proxy-serv
 
 ---
 
+## ❌ 卸载
+
+如果您想从系统中移除 Easy Proxy Server，只需运行：
+
+```bash
+bash <(curl -sSL https://raw.githubusercontent.com/crypto-chiefs/easy-proxy-server/master/scripts/uninstall.sh)
+```
+
+---
+
 ## 🧪 使用示例
 
 所有代理请求格式如下：

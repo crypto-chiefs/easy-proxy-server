@@ -43,6 +43,15 @@ bash <(curl -sSL https://raw.githubusercontent.com/crypto-chiefs/easy-proxy-serv
 
 ---
 
+## ❌ Uninstallation
+
+If you want to remove Easy Proxy Server from your system, simply run:
+
+```bash
+bash <(curl -sSL https://raw.githubusercontent.com/crypto-chiefs/easy-proxy-server/master/scripts/uninstall.sh)
+```
+---
+
 ## 🧪 How It Works
 
 All requests are routed through the proxy using this format:

@@ -42,6 +42,15 @@ bash <(curl -sSL https://raw.githubusercontent.com/crypto-chiefs/easy-proxy-serv
 
 ---
 
+## ❌ Uninstalasi
+
+Jika Anda ingin menghapus Easy Proxy Server dari sistem Anda, cukup jalankan:
+
+```bash
+bash <(curl -sSL https://raw.githubusercontent.com/crypto-chiefs/easy-proxy-server/master/scripts/uninstall.sh)
+```
+---
+
 ## 🧪 Cara Kerja
 
 Permintaan HTTP dilakukan melalui pola berikut:

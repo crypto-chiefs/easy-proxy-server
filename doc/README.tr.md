@@ -42,6 +42,16 @@ bash <(curl -sSL https://raw.githubusercontent.com/crypto-chiefs/easy-proxy-serv
 
 ---
 
+## ❌ Kaldırma
+
+Eğer Easy Proxy Server'ı sisteminizden kaldırmak istiyorsanız, sadece şu komutu çalıştırın:
+
+```bash
+bash <(curl -sSL https://raw.githubusercontent.com/crypto-chiefs/easy-proxy-server/master/scripts/uninstall.sh)
+```
+
+---
+
 ## 🧪 Nasıl çalışır?
 
 HTTP istekleri şu formatla yönlendirilir:
