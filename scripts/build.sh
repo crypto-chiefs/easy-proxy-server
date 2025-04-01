@@ -1,6 +1,16 @@
 #!/bin/bash
 set -e
 
+# Detect sudo or root
+if [[ $EUID -eq 0 ]]; then
+  SUDO=""
+else
+  SUDO="sudo"
+fi
+
+# Detect user reliably
+CURRENT_USER=$(logname 2>/dev/null || echo $SUDO_USER || echo $USER)
+
 if lsof -i :80 &>/dev/null; then
   if [[ -z "$PORT" ]]; then
     echo -e "\033[0;31m❌ Port 80 is already in use and no alternate PORT specified.\033[0m"
@@ -53,7 +63,6 @@ echo "🌀 Installing $BIN_NAME for $GOOS/$ARCH from $RELEASE_URL"
 mkdir -p "$INSTALL_DIR"
 cd "$INSTALL_DIR"
 curl -L "$RELEASE_URL" | tar -xz
-
 chmod +x "$BIN_NAME"
 
 if [ ! -f ".token" ]; then
@@ -66,12 +75,11 @@ if [ ! -f ".token" ]; then
   echo "🔑 Token: $(cat .token)"
 fi
 
-# Linux (systemd)
 if [[ "$GOOS" == "linux" ]]; then
   echo "⚙️ Setting up systemd..."
 
   SERVICE_FILE="/etc/systemd/system/$SERVICE_NAME.service"
-  sudo bash -c "cat > $SERVICE_FILE" <<EOF
+  $SUDO bash -c "cat > $SERVICE_FILE" <<EOF
 [Unit]
 Description=Proxy Service
 After=network.target
@@ -80,7 +88,7 @@ After=network.target
 ExecStart=$INSTALL_DIR/$BIN_NAME
 WorkingDirectory=$INSTALL_DIR
 Restart=always
-User=nobody
+User=$CURRENT_USER
 StandardOutput=journal
 StandardError=journal
 
@@ -88,21 +96,19 @@ StandardError=journal
 WantedBy=multi-user.target
 EOF
 
-  sudo systemctl daemon-reexec
-  sudo systemctl daemon-reload
-  sudo systemctl enable $SERVICE_NAME
-  sudo systemctl restart $SERVICE_NAME
+  $SUDO systemctl daemon-reexec
+  $SUDO systemctl daemon-reload
+  $SUDO systemctl enable $SERVICE_NAME
+  $SUDO systemctl restart $SERVICE_NAME
 
   echo "✅ Service started: systemctl status $SERVICE_NAME"
 
-# macOS
 elif [[ "$GOOS" == "darwin" ]]; then
   echo "🍎 Installed to $INSTALL_DIR"
   echo "📌 Add to launchctl manually if needed, or run:"
   echo "   $INSTALL_DIR/$BIN_NAME"
   echo "🔐 Token: $(cat $INSTALL_DIR/.token)"
 
-# Windows (bash-compatible environments)
 elif [[ "$GOOS" == "windows" ]]; then
   echo "🪟 Installed to $INSTALL_DIR"
   echo "📌 Run from PowerShell or CMD:"
