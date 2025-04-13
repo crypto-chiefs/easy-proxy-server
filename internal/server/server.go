@@ -67,23 +67,16 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Пропускаем только безопасные заголовки
-	safeHeaders := []string{
-		"Accept",
-		"Content-Type",
-		"Authorization",
-		"Cache-Control",
-	}
-
-	for _, h := range safeHeaders {
-		if values, ok := r.Header[h]; ok {
-			for _, v := range values {
-				req.Header.Add(h, v)
-			}
+	// Copy all Headers without Host и X-Forwarded-For
+	for header, values := range r.Header {
+		lower := strings.ToLower(header)
+		if lower == "host" || lower == "x-forwarded-for" {
+			continue
+		}
+		for _, value := range values {
+			req.Header.Add(header, value)
 		}
 	}
-
-	// Не добавляем X-Forwarded-For (и не нужен)
 
 	resp, err := client.Do(req)
 	if err != nil {
