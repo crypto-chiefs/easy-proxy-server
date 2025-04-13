@@ -51,10 +51,35 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	host := parts[1]
+	rawHost := parts[1]
 	rest := "/"
 	if len(parts) == 3 {
 		rest += parts[2]
+	}
+
+	var (
+		username string
+		password string
+		host     string
+	)
+
+	// check user:pass@
+	if strings.Contains(rawHost, "@") {
+		authAndHost := strings.SplitN(rawHost, "@", 2)
+		auth := authAndHost[0]
+		host = authAndHost[1]
+
+		authParts := strings.SplitN(auth, ":", 2)
+		if len(authParts) == 2 {
+			username = authParts[0]
+			password = authParts[1]
+		} else {
+			// invalid
+			http.Error(w, "Invalid auth format. Use user:pass@host", http.StatusBadRequest)
+			return
+		}
+	} else {
+		host = rawHost
 	}
 
 	proxyURL := "https://" + host + rest
@@ -67,7 +92,10 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Copy all Headers without Host и X-Forwarded-For
+	if username != "" && password != "" {
+		req.SetBasicAuth(username, password)
+	}
+
 	for header, values := range r.Header {
 		lower := strings.ToLower(header)
 		if lower == "host" || lower == "x-forwarded-for" {
